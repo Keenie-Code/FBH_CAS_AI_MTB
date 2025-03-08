@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gruner-Magic-Fundgrube</title>
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --primary-light: #e57373;
+            --primary-dark: #b71c1c;
+            --secondary: #ff6b35;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #2196f3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 40px;
+        }
+        
+        .logo-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+            color: var(--primary);
+        }
+        
+        .logo-section p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--danger);
+            border-radius: 50%;
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 1.5rem;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 20px;
+            animation: slideInLeft 0.5s ease-in-out;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .sidebar-menu a:hover {
+            background: #f5f7fa;
+        }
+        
+        .sidebar-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-menu svg {
+            margin-right: 10px;
+        }
+        
+        .project-list {
+            list-style: none;
+        }
+        
+        .project-list li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .project-list a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .project-list a:hover {
+            background: #f5f7fa;
+        }
+        
+        .project-list a.active {
+            background: #f5f7fa;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .project-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .project-dot.active {
+            background: var(--success);
+        }
+        
+        .project-dot.pending {
+            background: var(--warning);
+        }
+        
+        .project-dot.completed {
+            background: var(--info);
+        }
+        
+        .main-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .tab-button:hover {
+            color: var(--primary);
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            animation: slideInUp 0.6s ease-in-out;
+        }
+        
+        .main-search {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        
+        .main-search input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .main-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .main-search button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .main-search button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .filters-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        
+        .filters-toggle h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .filters-toggle .toggle-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .filters-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .filters-content.show {
+            max-height: 1000px;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .range-inputs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .range-inputs input {
+            width: 48%;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .checkbox-item input {
+            margin-right: 0.3rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #f1f1f1;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .search-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stats-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .view-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 0.3rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .document-row {
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .document-row.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .document-row:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .document-row td {
+            padding: 0.8rem 1rem;
+            vertical-align: middle;
+        }
+        
+        .document-title {
+            width: 40%;
+        }
+        
+        .title-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .doc-name {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+        
+        .doc-attachment {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .folder-path {
+            width: 35%;
+        }
+        
+        .folder-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+        
+        .folder-link:hover {
+            text-decoration: underline;
+        }
+        
+        .document-date {
+            width: 15%;
+            color: #6c757d;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .file-type {
+            width: 10%;
+            text-align: center;
+        }
+        
+        .file-type svg {
+            color: var(--primary);
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .action-btn:hover {
+            color: var(--primary);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .no-results h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .no-results p {
+            color: #6c757d;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            margin: 0 0.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Chat Tab Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 250px);
+            min-height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            font-weight: 500;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary-light);
+            color: white;
+            border-bottom-right-radius: 0;
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+            background: #f1f1f1;
+            color: var(--dark);
+            border-bottom-left-radius: 0;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.5);
+            text-align: right;
+            margin-top: 0.3rem;
+        }
+        
+        .message.user .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .chat-send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-send-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .chat-options {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .chat-option {
+            padding: 0.5rem 1rem;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-option:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+        
+        .doc-attachment {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .doc-attachment h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .doc-attachment p {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .search-section {
+                padding: 1rem;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .document-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .document-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        .checkbox-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-options label {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .checkbox-options input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-section">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50" width="100" height="50">
+                        <rect x="10" y="10" width="30" height="30" fill="#d32f2f" rx="5" ry="5"/>
+                        <polygon points="25,15 40,10 40,40 25,35" fill="#e57373"/>
+                        <rect x="40" y="15" width="20" height="20" fill="#b71c1c" rx="2" ry="2"/>
+                        <circle cx="50" cy="25" r="5" fill="white"/>
+                        <polygon points="65,15 90,15 90,35 65,35" fill="#d32f2f" rx="2" ry="2"/>
+                        <rect x="70" y="20" width="15" height="2" fill="white"/>
+                        <rect x="70" y="25" width="15" height="2" fill="white"/>
+                        <rect x="70" y="30" width="15" height="2" fill="white"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Gruner-Magic-Fundgrube</h1>
+                    <p>Zentralisierte Suche für alle Projektkommunikationen & Dokumente</p>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="notification-bell">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="user-avatar">MH</div>
+            </div>
+        </header>
+        
+        <div class="app-container">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Navigation</h3>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a href="#" class="active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                                    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                                </svg>
+                                Projekte
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Dokumente
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <polyline points="23 20 23 14 17 14"></polyline>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                                </svg>
+                                Suchverlauf
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Aktive Projekte</h3>
+                    <ul class="project-list">
+                        <li>
+                            <a href="#" class="active">
+                                <span class="project-dot active"></span>
+                                E211222333 Spital Haribo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot active"></span>
+                                E211222444 Bürokomplex Gringe
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot pending"></span>
+                                E211222555 Alterswohnen Narnia
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot completed"></span>
+                                E21122777 Schulhaus Pipilangstrumpf
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Suchverlauf</h3>
+                    <ul class="search-history">
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Dachhaube Lüftung Hochhaus
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Besprechung Statik
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Protokoll E211222333
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Unterlagen Einbaudetail BSK
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            
+            <main class="main-content">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="search">Suche</button>
+                    <button class="tab-button" data-tab="chat">Chat</button>
+                </div>
+                
+                <!-- Search Tab Content -->
+                <div class="tab-content active" id="search-tab">
+                    <section class="search-section">
+                        <div class="main-search">
+                            <input type="text" placeholder="Suche nach E-Mails, Verträgen, Plänen, Zeitplänen..." id="main-search-input">
+                            <button id="search-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="filters-toggle" id="filters-toggle">
+                            <h3>Erweiterte Filter</h3>
+                            <div class="toggle-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="filters-content" id="filters-content">
+                            <div class="filters-grid">
+                                <div class="filter-group">
+                                    <label>Projekt</label>
+                                    <select id="project">
+                                        <option value="">Alle Projekte</option>
+                                        <option value="riverfront">E211000000 Flussufer-Turm Komplex</option>
+                                        <option value="highway">E211000000 Schlumpfmuseum</option>
+                                        <option value="office">E200999888 Kita Papa Moll </option>
+                                        <option value="medical">E21000555777 Westside Medizinisches Zentrum</option>
+                                        <option value="airport">E25000000 Flughafen Terminal Erweiterung</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Zeitraum</label>
+                                    <div class="range-inputs">
+                                        <input type="date" id="date-from">
+                                        <input type="date" id="date-to">
+                                    </div>
+                                </div>
+                                <!-- Additional filter groups omitted for brevity -->
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Search results section omitted for brevity -->
+                </div>
+                
+                <!-- Chat Tab Content -->
+                <div class="tab-content" id="chat-tab">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            GruBo dein AI Assistent - Dokumentensuche
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message bot">
+                                <p>Willkommen beim GruBo dein AI Assistenten. Wie kann ich Ihnen heute helfen? Sie können nach Dokumenten suchen oder Fragen zu Projekten stellen.</p>
+                                <div class="message-time">10:05</div>
+                            </div>
+                            <div class="message user">
+                                <p>Ich suche Dokumente zur Lüftungszentrale und den Aussparungen im Projekt E211222333 Spital Haribo.</p>
+                                <div class="message-time">10:07</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Ich habe 3 relevante Dokumente zur Lüftungszentrale und den Aussparungen im Projekt E211222333 Spital Haribo gefunden:</p>
+                                <div class="doc-attachment">
+                                    <h4>E-Mail vom Statiker zur Ablehnung der Aussparungen</h4>
+                                    <p>E-Mail von Hans Meier (Statiker) vom 15.03.2025</p>
+                                </div>
+                                <div class="doc-attachment">
+                                    <h4>Überarbeiteter Plan der Lüftungszentrale - Revision C</h4>
+                                    <p>PDF von Lüftungstechnik GmbH vom 20.03.2025</p>
+                                </div>
+                                <div class="doc-attachment">
+                                    <h4>Freigabe des Statikers für die verschobene Aussparung</h4>
+                                    <p>E-Mail von Hans Meier (Statiker) vom 25.03.2025</p>
+                                </div>
+                                <div class="message-time">10:08</div>
+                            </div>
+                            <div class="message user">
+                                <p>Warum wurden die Aussparungen zunächst abgelehnt?</p>
+                                <div class="message-time">10:09</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Die Aussparungen wurden zunächst abgelehnt, weil sich an der geplanten Stelle eine Armierung befand, die nicht durchbrochen werden durfte. Dies wurde in der E-Mail von Hans Meier (Statiker) vom 15.03.2025 festgestellt.</p>
+                                <div class="message-time">10:10</div>
+                            </div>
+                            <div class="message user">
+                                <p>Wie wurde das Problem gelöst?</p>
+                                <div class="message-time">10:11</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Das Problem wurde gelöst, indem der Lüftungskanal um 30 cm verschoben wurde. Zusätzlich wurden in der Lüftungszentrale die Heizleitungen angepasst, um diese Verschiebung zu ermöglichen. Der überarbeitete Plan (Revision C) wurde am 20.03.2025 von Lüftungstechnik GmbH erstellt und anschließend vom Statiker Hans Meier am 25.03.2025 freigegeben.</p>
+                                <div class="message-time">10:12</div>
+                            </div>
+                            <div class="message user">
+                                <p>Gab es noch weitere Änderungen im Plan?</p>
+                                <div class="message-time">10:13</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Ja, im überarbeiteten Plan (Revision C) wurden zusätzlich zu den Anpassungen für die Lüftungszentrale folgende Änderungen vorgenommen:</p>
+                                <ol>
+                                    <li>Verschiebung des Lüftungskanals um 30 cm <a href="#" style="color: red; font-weight: bold;">[Plan]</a></li>
+                                    <li>Anpassung der Heizleitungen in der Lüftungszentrale <a href="#" style="color: red; font-weight: bold;">[Plan]</a></li>
+                                    <li>Hinzufügung einer zusätzlichen Abwasserleitung für ein Lavabo im Stockwerk darüber <a href="#" style="color: red; font-weight: bold;">[Plan]</a></li>
+                                </ol>
+                                <p>Diese Änderungen sind im überarbeiteten Plan (Revision C) vom 20.03.2025 dokumentiert.</p>
+                                <div class="message-time">10:14</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="chat-input" placeholder="Stellen Sie eine Frage oder geben Sie einen Suchbegriff ein...">
+                            <button class="chat-send-btn" id="chat-send-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="chat-options">
+                            <div class="chat-option">Zeige mir Dokumente zur Lüftungszentrale</div>
+                            <div class="chat-option">Was war das Problem mit den Aussparungen?</div>
+                            <div class="chat-option">Wie wurde die Aussparung verschoben?</div>
+                            <div class="chat-option">Gibt es noch weitere Änderungen im Plan?</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+        const chatOptions = document.querySelectorAll('.chat-option');
+        
+        // Tab switching logic
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                button.classList.add('active');
+                document.getElementById(`${button.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+        
+        // Filter toggle
+        const filtersToggle = document.getElementById('filters-toggle');
+        const filtersContent = document.getElementById('filters-content');
+        
+        filtersToggle.addEventListener('click', () => {
+            filtersContent.classList.toggle('show');
+        });
+        
+        // Process chat input
+        function processChat(input) {
+            addMessageToChat(input, true);
+            
+            setTimeout(() => {
+                if (input.toLowerCase().includes('lüftung') || input.toLowerCase().includes('aussparungen')) {
+                    addMessageToChat({
+                        text: 'Ich habe 3 relevante Dokumente zur Lüftungszentrale und den Aussparungen gefunden:',
+                        attachments: [
+                            {
+                                title: 'E-Mail vom Statiker zur Ablehnung der Aussparungen',
+                                description: 'E-Mail von Hans Meier (Statiker) vom 15.03.2025'
+                            },
+                            {
+                                title: 'Überarbeiteter Plan der Lüftungszentrale - Revision C',
+                                description: 'PDF von Lüftungstechnik GmbH vom 20.03.2025'
+                            },
+                            {
+                                title: 'Freigabe des Statikers für die verschobene Aussparung',
+                                description: 'E-Mail von Hans Meier (Statiker) vom 25.03.2025'
+                            }
+                        ]
+                    });
+                } else if (input.toLowerCase().includes('warum') && input.toLowerCase().includes('abgelehnt')) {
+                    addMessageToChat('Die Aussparungen wurden zunächst abgelehnt, weil sich an der geplanten Stelle eine Armierung befand, die nicht durchbrochen werden durfte. Dies wurde in der E-Mail von Hans Meier (Statiker) vom 15.03.2025 festgestellt.');
+                } else if (input.toLowerCase().includes('wie') && input.toLowerCase().includes('gelöst')) {
+                    addMessageToChat('Das Problem wurde gelöst, indem der Lüftungskanal um 30 cm verschoben wurde. Zusätzlich wurden in der Lüftungszentrale die Heizleitungen angepasst, um diese Verschiebung zu ermöglichen. Der überarbeitete Plan (Revision C) wurde am 20.03.2025 von Lüftungstechnik GmbH erstellt und anschließend vom Statiker Hans Meier am 25.03.2025 freigegeben.');
+                } else if (input.toLowerCase().includes('änderungen') && input.toLowerCase().includes('plan')) {
+                    addMessageToChat({
+                        text: 'Im überarbeiteten Plan (Revision C) wurden folgende Änderungen vorgenommen:',
+                        list: [
+                            'Verschiebung des Lüftungskanals um 30 cm <a href="#" style="color: red; font-weight: bold;">[Plan]</a>',
+                            'Anpassung der Heizleitungen in der Lüftungszentrale <a href="#" style="color: red; font-weight: bold;">[Plan]</a>',
+                            'Hinzufügung einer zusätzlichen Abwasserleitung für ein Lavabo im Stockwerk darüber <a href="#" style="color: red; font-weight: bold;">[Plan]</a>'
+                        ]
+                    });
+                } else {
+                    addMessageToChat('Ich verstehe Ihre Anfrage nicht ganz. Versuchen Sie, nach spezifischen Dokumenten, Projekten oder Terminen zu fragen. Oder verwenden Sie die Suchfunktion für detailliertere Ergebnisse.');
+                }
+            }, 1000);
+        }
+        
+        // Add message to chat with list support
+        function addMessageToChat(message, isUser = false) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+            
+            if (typeof message === 'string') {
+                messageEl.innerHTML = `
+                    <p>${message}</p>
+                    <div class="message-time">${timeString}</div>
+                `;
+            } else {
+                let content = `<p>${message.text}</p>`;
+                
+                if (message.list && message.list.length > 0) {
+                    content += '<ol>';
+                    message.list.forEach(item => {
+                        content += `<li>${item}</li>`;
+                    });
+                    content += '</ol>';
+                }
+                
+                if (message.attachments && message.attachments.length > 0) {
+                    message.attachments.forEach(attachment => {
+                        content += `
+                            <div class="doc-attachment">
+                                <h4>${attachment.title}</h4>
+                                <p>${attachment.description}</p>
+                            </div>
+                        `;
+                    });
+                }
+                
+                content += `<div class="message-time">${timeString}</div>`;
+                messageEl.innerHTML = content;
+            }
+            
+            chatMessages.appendChild(messageEl);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Handle chat send button click
+        chatSendBtn.addEventListener('click', () => {
+            const input = chatInput.value.trim();
+            if (input) {
+                processChat(input);
+                chatInput.value = '';
+            }
+        });
+        
+        // Handle Enter key in chat input
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const input = chatInput.value.trim();
+                if (input) {
+                    processChat(input);
+                    chatInput.value = '';
+                }
+            }
+        });
+        
+        // Handle chat quick option clicks
+        chatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const optionText = option.textContent;
+                processChat(optionText);
+            });
+        });
+    </script>
+</body>
+</html>

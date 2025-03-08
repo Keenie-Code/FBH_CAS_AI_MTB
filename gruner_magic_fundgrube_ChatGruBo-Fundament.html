@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gruner-Magic-Fundgrube</title>
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --primary-light: #e57373;
+            --primary-dark: #b71c1c;
+            --secondary: #ff6b35;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #2196f3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 40px;
+        }
+        
+        .logo-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+            color: var(--primary);
+        }
+        
+        .logo-section p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--danger);
+            border-radius: 50%;
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 1.5rem;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 20px;
+            animation: slideInLeft 0.5s ease-in-out;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .sidebar-menu a:hover {
+            background: #f5f7fa;
+        }
+        
+        .sidebar-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-menu svg {
+            margin-right: 10px;
+        }
+        
+        .project-list {
+            list-style: none;
+        }
+        
+        .project-list li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .project-list a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .project-list a:hover {
+            background: #f5f7fa;
+        }
+        
+        .project-list a.active {
+            background: #f5f7fa;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .project-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .project-dot.active {
+            background: var(--success);
+        }
+        
+        .project-dot.pending {
+            background: var(--warning);
+        }
+        
+        .project-dot.completed {
+            background: var(--info);
+        }
+        
+        .main-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .tab-button:hover {
+            color: var(--primary);
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            animation: slideInUp 0.6s ease-in-out;
+        }
+        
+        .main-search {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        
+        .main-search input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .main-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .main-search button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .main-search button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .filters-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        
+        .filters-toggle h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .filters-toggle .toggle-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .filters-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .filters-content.show {
+            max-height: 1000px;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .range-inputs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .range-inputs input {
+            width: 48%;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .checkbox-item input {
+            margin-right: 0.3rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #f1f1f1;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .search-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stats-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .view-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 0.3rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .document-list {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .document-row {
+            border-bottom: 1px solid #f0f0f0;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .document-row.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .document-row:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .document-row td {
+            padding: 0.8rem 1rem;
+            vertical-align: middle;
+        }
+        
+        .document-title {
+            width: 40%;
+        }
+        
+        .title-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .doc-name {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+        
+        .doc-attachment {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .folder-path {
+            width: 35%;
+        }
+        
+        .folder-link {
+            color: var(--primary);
+            text-decoration: none;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+        
+        .folder-link:hover {
+            text-decoration: underline;
+        }
+        
+        .document-date {
+            width: 15%;
+            color: #6c757d;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .file-type {
+            width: 10%;
+            text-align: center;
+        }
+        
+        .file-type svg {
+            color: var(--primary);
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .action-btn:hover {
+            color: var(--primary);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .no-results h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .no-results p {
+            color: #6c757d;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            margin: 0 0.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Chat Tab Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 250px);
+            min-height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            font-weight: 500;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary-light);
+            color: white;
+            border-bottom-right-radius: 0;
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+            background: #f1f1f1;
+            color: var(--dark);
+            border-bottom-left-radius: 0;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.5);
+            text-align: right;
+            margin-top: 0.3rem;
+        }
+        
+        .message.user .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .chat-send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-send-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .chat-options {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .chat-option {
+            padding: 0.5rem 1rem;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-option:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+        
+        .doc-attachment {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .doc-attachment h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .doc-attachment p {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .search-section {
+                padding: 1rem;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .document-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .document-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        .checkbox-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-options label {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .checkbox-options input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-section">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50" width="100" height="50">
+                        <rect x="10" y="10" width="30" height="30" fill="#d32f2f" rx="5" ry="5"/>
+                        <polygon points="25,15 40,10 40,40 25,35" fill="#e57373"/>
+                        <rect x="40" y="15" width="20" height="20" fill="#b71c1c" rx="2" ry="2"/>
+                        <circle cx="50" cy="25" r="5" fill="white"/>
+                        <polygon points="65,15 90,15 90,35 65,35" fill="#d32f2f" rx="2" ry="2"/>
+                        <rect x="70" y="20" width="15" height="2" fill="white"/>
+                        <rect x="70" y="25" width="15" height="2" fill="white"/>
+                        <rect x="70" y="30" width="15" height="2" fill="white"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Gruner-Magic-Fundgrube</h1>
+                    <p>Zentralisierte Suche für alle Projektkommunikationen & Dokumente</p>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="notification-bell">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="user-avatar">MH</div>
+            </div>
+        </header>
+        
+        <div class="app-container">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Navigation</h3>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a href="#" class="active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                                    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                                </svg>
+                                Projekte
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Dokumente
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <polyline points="23 20 23 14 17 14"></polyline>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                                </svg>
+                                Suchverlauf
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Aktive Projekte</h3>
+                    <ul class="project-list">
+                        <li>
+                            <a href="#" class="active">
+                                <span class="project-dot active"></span>
+                                E211222333 Spital Haribo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot active"></span>
+                                E211222444 Bürokomplex Gringe
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot pending"></span>
+                                E211222555 Alterswohnen Narnia
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="project-dot completed"></span>
+                                E21122777 Schulhaus Pipilangstrumpf
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Suchverlauf</h3>
+                    <ul class="search-history">
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Dachhaube Lüftung Hochhaus
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Besprechung Statik
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Protokoll E211222333
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Unterlagen Einbaudetail BSK
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            
+            <main class="main-content">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="search">Suche</button>
+                    <button class="tab-button" data-tab="chat">Chat</button>
+                </div>
+                
+                <!-- Search Tab Content -->
+                <div class="tab-content active" id="search-tab">
+                    <section class="search-section">
+                        <div class="main-search">
+                            <input type="text" placeholder="Suche nach E-Mails, Verträgen, Plänen, Zeitplänen..." id="main-search-input">
+                            <button id="search-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="filters-toggle" id="filters-toggle">
+                            <h3>Erweiterte Filter</h3>
+                            <div class="toggle-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="filters-content" id="filters-content">
+                            <div class="filters-grid">
+                                <div class="filter-group">
+                                    <label>Projekt</label>
+                                    <select id="project">
+                                        <option value="">Alle Projekte</option>
+                                        <option value="riverfront">E211000000 Flussufer-Turm Komplex</option>
+                                        <option value="highway">E211000000 Schlumpfmuseum</option>
+                                        <option value="office">E200999888 Kita Papa Moll </option>
+                                        <option value="medical">E21000555777 Westside Medizinisches Zentrum</option>
+                                        <option value="airport">E25000000 Flughafen Terminal Erweiterung</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Zeitraum</label>
+                                    <div class="range-inputs">
+                                        <input type="date" id="date-from">
+                                        <input type="date" id="date-to">
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Datenquellen</label>
+                                    <select id="sources" size="1">
+                                        <option value="">Alle</option>
+                                        <option value="email">Email</option>
+                                        <option value="sharepoint">Sharepoint</option>
+                                        <option value="laufwerkk">Laufwerk K</option>
+                                        <option value="onenote">OneNote</option>
+                                        <option value="onedrive">Onedrive</option>
+                                        <option value="trimbleCcnnect">TrimbleConnect</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Dokumenttyp</label>
+                                    <select id="document-type">
+                                        <option value="">Alle Typen</option>
+                                        <option value="email">E-Mails</option>
+                                        <option value="contract">Verträge</option>
+                                        <option value="plan">Pläne & Designs</option>
+                                        <option value="timeline">Zeitpläne</option>
+                                        <option value="invoice">Rechnungen</option>
+                                        <option value="report">Berichte</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Firma/Kontakt</label>
+                                    <select id="contact">
+                                        <option value="">Alle Kontakte</option>
+                                        <option value="acme">Acme Bau GmbH</option>
+                                        <option value="smithson">Müller Architekten</option>
+                                        <option value="reliable">Weber Lieferanten AG</option>
+                                        <option value="johnson">Schmidt Ingenieure</option>
+                                        <option value="city">Stadtplanungsamt</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Datei Typ</label>
+                                    <select id="file-type">
+                                        <option value="">Alle Dateien</option>
+                                        <option value="pdf">PDF Dokumente</option>
+                                        <option value="docx">Word Dokumente</option>
+                                        <option value="xlsx">Excel Tabellen</option>
+                                        <option value="dwg">CAD Zeichnungen</option>
+                                        <option value="jpg">Bilder</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Nicht relevant</label>
+                                    <input type="text" id="not-relevant" placeholder="Auszuschließende Begriffe...">
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Optionen</label>
+                                    <div class="checkbox-options">
+                                        <label>
+                                            <input type="checkbox" id="search-in-docs"> Auch in Dokumenten suchen
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" id="include-all-words"> Alle diese Wörter
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" id="reset-filters">Filter zurücksetzen</button>
+                                <button class="btn btn-primary" id="apply-filters">Filter anwenden</button>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <div class="loading" id="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Dokumente werden gesucht...</p>
+                    </div>
+                    
+                    <div class="search-stats">
+                        <div class="stats-text">24 Ergebnisse gefunden für "Fundament Inspektion"</div>
+                        <div class="view-options">
+                            <button class="view-btn active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                            </button>
+                            <button class="view-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="results-section" id="results-section">
+                        <table class="document-list">
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Fundamentinspektion Ergebnisse - Spital Haribo</span>
+                                        <span class="doc-attachment">2 Anhänge: Inspektion_Report.pdf, Bilder.zip</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">E211222333 / Dokumentation / Inspektion</a>
+                                </td>
+                                <td class="document-date">24.02.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </td>
+                            </tr>
+                            
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Fundament Verstärkungsplan - Revision B</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">E211222333 / Planung / Statik</a>
+                                </td>
+                                <td class="document-date">10.02.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </td>
+                            </tr>
+                            
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Geotechnisches Gutachten - Bürokomplex Gringe</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">E211222444 / Dokumentation / Gutachten</a>
+                                </td>
+                                <td class="document-date">05.02.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </td>
+                            </tr>
+                            
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Besprechungsprotokoll Fundament - Alterswohnen Narnia</span>
+                                        <span class="doc-attachment">1 Anhang: Entscheidungen_Matrix.xlsx</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">E211222555 / Protokolle / Besprechungen</a>
+                                </td>
+                                <td class="document-date">18.02.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </td>
+                            </tr>
+                            
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Fundamentpläne - Schulhaus Pipilangstrumpf</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">Schulhaus Pipilangstrumpf / Pläne / Rohbau</a>
+                                </td>
+                                <td class="document-date">12.01.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <path d="M2 15h10"></path>
+                                        <path d="M9 18l3-3-3-3"></path>
+                                    </svg>
+                                </td>
+                            </tr>
+                            
+                            <tr class="document-row visible">
+                                <td class="document-title">
+                                    <div class="title-content">
+                                        <span class="doc-name">Rechnung #J-2312 - Fundamentmaterialien</span>
+                                    </div>
+                                </td>
+                                <td class="folder-path">
+                                    <a href="#" class="folder-link">E211222333 / Finanzen / Rechnungen</a>
+                                </td>
+                                <td class="document-date">15.02.2025</td>
+                                <td class="file-type">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                                        <line x1="2" y1="10" x2="22" y2="10"></line>
+                                        <line x1="7" y1="4" x2="7" y2="16"></line>
+                                    </svg>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Add pagination controls at the bottom -->
+                        <div class="pagination">
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">4</button>
+                            <button class="pagination-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Tab Content -->
+                <div class="tab-content" id="chat-tab">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            GruBo dein AI Assistent - Dokumentensuche
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message bot">
+                                <p>Willkommen beim GruBo dein AI Assistenten. Wie kann ich Ihnen heute helfen? Sie können nach Dokumenten suchen oder Fragen zu Projekten stellen.</p>
+                                <div class="message-time">10:05</div>
+                            </div>
+                            <div class="message user">
+                                <p>Ich suche Dokumente zum Fundament des Flussufer-Turm Projekts</p>
+                                <div class="message-time">10:07</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Ich habe 4 relevante Dokumente zum Fundament des Flussufer-Turm Projekts gefunden:</p>
+                                <div class="doc-attachment">
+                                    <h4>Fundamentinspektion Ergebnisse - Flussufer-Turm</h4>
+                                    <p>E-Mail vom Stadtinspektor (Michael Müller) vom 24.02.2025</p>
+                                </div>
+                                <div class="doc-attachment">
+                                    <h4>Fundament Verstärkungsplan - Revision B</h4>
+                                    <p>PDF von Müller Architekten vom 10.02.2025</p>
+                                </div>
+                                <div class="doc-attachment">
+                                    <h4>Fundamentinspektions-Dienstleistungen - Vertragsänderung</h4>
+                                    <p>Vertrag mit Schmidt Ingenieure vom 30.01.2025</p>
+                                </div>
+                                <div class="message-time">10:08</div>
+                            </div>
+                            <div class="message user">
+                                <p>Was wurde in der nordwestlichen Ecke des Fundaments geändert?</p>
+                                <div class="message-time">10:09</div>
+                            </div>
+                            <div class="message bot">
+                                <p>Basierend auf den Dokumenten wurden folgende Änderungen an der nordwestlichen Ecke des Fundaments vorgenommen:</p>
+                                <ol style="padding-left: 2em;">
+                                    <li>Zusätzliche Bewehrungsplatzierung in den Abschnitten A3-A7 <span style="color: grey"><i>(13.01.2025, Bruno Platzinger)</i></span> <a href="#" style="color: red; font-weight: bold;">[pdf]</a> <a href="#" style="color: red; font-weight: bold;">[Mail]</a></li>
+                                    <li>Verbesserte Betonmischung (Upgrade auf Klasse H-45) <span style="color: grey"><i>(13.01.2025, Bruno Platzinger)</i></span> <a href="#" style="color: red; font-weight: bold;">[Mail]</a></li>
+                                    <li>Überarbeitete Entwässerungsspezifikationen <span style="color: grey"><i>(20.01.2025, Bruno Platzinger)</i></span> <a href="#" style="color: red; font-weight: bold;">[pdf]</a></li>
+                                    <li>Installation von zusätzlichen 350 Quadratmetern Abdichtungsmembran <span style="color: grey"><i>(30.01.2025, Max Mauer)</i></span> <a href="#" style="color: red; font-weight: bold;">[Mail]</a></li>
+                                </ol>
+                                <br />
+                                <p>Diese Änderungen wurden nach der vorläufigen Inspektion empfohlen und in der Revision B des Verstärkungsplans dokumentiert. Die Materialien wurden laut Rechnung #J-2312 von Weber Lieferanten AG bestellt.</p>
+                                <div class="message-time">10:10</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="chat-input" placeholder="Stellen Sie eine Frage oder geben Sie einen Suchbegriff ein...">
+                            <button class="chat-send-btn" id="chat-send-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="chat-options">
+                            <div class="chat-option">Zeige mir alle ausstehenden Rechnungen</div>
+                            <div class="chat-option">Wann ist die nächste Inspektion geplant?</div>
+                            <div class="chat-option">Fasse die letzten Änderungen am Projekt zusammen</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const filtersToggle = document.getElementById('filters-toggle');
+        const filtersContent = document.getElementById('filters-content');
+        const resultsSection = document.getElementById('results-section');
+        const searchBtn = document.getElementById('search-btn');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const mainSearchInput = document.getElementById('main-search-input');
+        const loadingEl = document.getElementById('loading');
+        // Get DOM elements for tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.querySelectorAll('.chat-option');
+        
+        // Sample document data (would be fetched from your central repository)
+        const documentsData = [
+            {
+                id: 1,
+                title: "Fundamentinspektion Ergebnisse - Flussufer-Turm",
+                type: "email",
+                date: "24.02.2025",
+                project: "riverfront",
+                from: "Michael Müller, Stadtinspektor",
+                to: "Projektmanagement-Team",
+                attachments: 2,
+                company: "city",
+                stage: "inspection",
+                snippet: "Ich freue mich, Ihnen mitteilen zu können, dass unser Team die Fundamentinspektion für den Flussufer-Turm Komplex abgeschlossen hat. Das Fundament hat alle erforderlichen Tests bestanden, mit nur geringfügigen Anpassungen in der nordwestlichen Ecke, wie im beigefügten Bericht detailliert beschrieben. Bitte überprüfen...",
+                tags: ["Inspektion", "Fundament", "Genehmigt"],
+                fileType: null,
+                status: "approved"
+            },
+            {
+                id: 2,
+                title: "Fundament Verstärkungsplan - Revision B",
+                type: "plan",
+                date: "10.02.2025",
+                project: "riverfront",
+                from: "Müller Architekten",
+                fileSize: "4,2 MB",
+                company: "smithson",
+                stage: "planning",
+                snippet: "Dieser überarbeitete Fundament-Verstärkungsplan adressiert die bei der vorläufigen Inspektion aufgeworfenen Bedenken. Änderungen umfassen zusätzliche Bewehrungsplatzierung in den Abschnitten A3-A7, verbesserte Betonmischung für die NW-Ecke und überarbeitete Entwässerungsspezifikationen, wie in den detaillierten Zeichnungen hervorgehoben...",
+                tags: ["Pläne", "Fundament", "Revision"],
+                fileType: "pdf",
+                status: "approved"
+            },
+            {
+                id: 3,
+                title: "Fundamentinspektions-Dienstleistungen - Vertragsänderung",
+                type: "contract",
+                date: "30.01.2025",
+                project: "riverfront",
+                from: "Schmidt Ingenieure",
+                signedStatus: "Von beiden Parteien unterzeichnet",
+                company: "johnson",
+                stage: "approval",
+                snippet: "Diese Änderung zum ursprünglichen Vertrag vom 5. Dezember 2024 erweitert die Fundamentinspektionsdienste, um zusätzliche Tests für die nordwestliche Ecke des Flussufer-Turm Komplexes einzuschließen. Die zusätzlichen Leistungen umfassen Bodendichteprüfung, Bewehrungsüberprüfung und erweiterte Betonqualitätstests...",
+                tags: ["Vertrag", "Änderung", "Inspektion"],
+                fileType: "docx",
+                status: "approved"
+            },
+            {
+                id: 4,
+                title: "Rechnung #J-2312 - Fundamentmaterialien",
+                type: "invoice",
+                date: "15.02.2025",
+                project: "riverfront",
+                from: "Weber Lieferanten AG",
+                amount: "€42.867,50",
+                company: "reliable",
+                stage: "procurement",
+                snippet: "Rechnung für zusätzliche Fundamentmaterialien, die für die Verstärkung der nordwestlichen Ecke benötigt werden. Zu den Artikeln gehören 125 Kubikmeter hochfeste Betonmischung (Klasse H-45), 14,5 Tonnen #8 Bewehrungsstahl, Abdichtungsmembran (350 Quadratmeter) und Dehnungsfugenmaterial. Zahlung innerhalb von 30 Tagen fällig...",
+                tags: ["Rechnung", "Materialien", "Ausstehend"],
+                fileType: "pdf",
+                status: "pending"
+            }
+        ];
+        
+        // These event listeners are now set in the initializeApp function for better reliability
+        
+        // Function to render documents
+        function renderDocuments(documents) {
+            if (documents.length === 0) {
+                resultsSection.innerHTML = `
+                    <div class="no-results">
+                        <h3>Keine Dokumente gefunden</h3>
+                        <p>Versuchen Sie, Ihre Filter oder Suchbegriffe anzupassen</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear results except pagination
+            const paginationEl = resultsSection.querySelector('.pagination');
+            resultsSection.innerHTML = '';
+            
+            documents.forEach((document, index) => {
+                const card = document_to_card(document, index);
+                resultsSection.appendChild(card);
+                
+                // Trigger animation with a small delay
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 50 * index);
+            });
+            
+            // Re-add pagination
+            if (paginationEl) {
+                resultsSection.appendChild(paginationEl);
+            }
+        }
+        
+        // Function to create document card from data
+        function document_to_card(doc, index) {
+            const card = document.createElement('div');
+            card.className = `document-card ${doc.type}`;
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            // Icon mapping for document types
+            const iconMap = {
+                email: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
+                plan: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>',
+                contract: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.08V8l-6-6H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h6"></path><path d="M14 2v6h6"></path><path d="M18.5 15a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path><path d="M18.5 21.5v-2.5"></path><path d="M18.5 15v-2.5"></path></svg>',
+                invoice: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="7" y1="4" x2="7" y2="16"></line></svg>',
+                timeline: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+                report: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>'
+            };
+            
+            // Document meta information (varies by type)
+            let metaItems = '';
+            
+            if (doc.type === 'email') {
+                metaItems = `
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Von: ${doc.from}
+                    </div>
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        ${doc.attachments} Anhänge
+                    </div>
+                `;
+            } else if (doc.type === 'plan') {
+                metaItems = `
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        ${doc.from}
+                    </div>
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        PDF Dokument (${doc.fileSize})
+                    </div>
+                `;
+            } else if (doc.type === 'contract') {
+                metaItems = `
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        ${doc.from}
+                    </div>
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        ${doc.signedStatus}
+                    </div>
+                `;
+            } else if (doc.type === 'invoice') {
+                metaItems = `
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        ${doc.from}
+                    </div>
+                    <div class="meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        ${doc.amount}
+                    </div>
+                `;
+            }
+            
+            // Tags markup
+            const tagsHtml = doc.tags.map(tag => `<span class="document-tag">${tag}</span>`).join('');
+            
+            card.innerHTML = `
+                <div class="document-content">
+                    <div class="document-icon ${doc.type}">
+                        ${iconMap[doc.type]}
+                    </div>
+                    <div class="document-details">
+                        <div class="document-title">
+                            <h3>${doc.title}</h3>
+                            <span class="document-date">${doc.date}</span>
+                        </div>
+                        <div class="document-meta">
+                            ${metaItems}
+                        </div>
+                        <p class="document-snippet">${doc.snippet}</p>
+                        <div class="document-footer">
+                            <div class="document-tags">
+                                ${tagsHtml}
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="Herunterladen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                                <button class="action-btn" title="Lesezeichen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                                <button class="action-btn" title="Weitere Optionen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+            
+            return card;
+        }
+        
+        // Function to filter documents
+        function filterDocuments() {
+            const searchTerm = mainSearchInput.value.toLowerCase();
+            const documentType = document.getElementById('document-type').value;
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
+            const project = document.getElementById('project').value;
+            const contact = document.getElementById('contact').value;
+            const contentKeywords = document.getElementById('content-keywords').value.toLowerCase();
+            const fileType = document.getElementById('file-type').value;
+            const notRelevant = document.getElementById('not-relevant').value.toLowerCase();
+            const searchInDocs = document.getElementById('search-in-docs').checked;
+            const includeAllWords = document.getElementById('include-all-words').checked;
+            
+            // Convert dates to comparable format
+            const fromDate = dateFrom ? new Date(dateFrom) : null;
+            const toDate = dateTo ? new Date(dateTo) : null;
+            
+            // Filter documents
+            return documentsData.filter(doc => {
+                // Search term filter (in title or content)
+                if (searchTerm) {
+                    if (includeAllWords) {
+                        const terms = searchTerm.split(' ');
+                        for (const term of terms) {
+                            if (!doc.title.toLowerCase().includes(term) && 
+                                !doc.snippet.toLowerCase().includes(term)) {
+                                return false;
+                            }
+                        }
+                    } else {
+                        if (!doc.title.toLowerCase().includes(searchTerm) && 
+                            !doc.snippet.toLowerCase().includes(searchTerm)) {
+                            return false;
+                        }
+                    }
+                }
+                
+                // Not relevant filter
+                if (notRelevant) {
+                    const notRelevantTerms = notRelevant.split(' ');
+                    for (const term of notRelevantTerms) {
+                        if (doc.title.toLowerCase().includes(term) || 
+                            doc.snippet.toLowerCase().includes(term)) {
+                            return false;
+                        }
+                    }
+                }
+                
+                // Document type filter
+                if (documentType && doc.type !== documentType) return false;
+                
+                // Date range filter
+                if (fromDate || toDate) {
+                    const docDate = new Date(doc.date.split('.').reverse().join('-'));
+                    if (fromDate && docDate < fromDate) return false;
+                    if (toDate && docDate > toDate) return false;
+                }
+                
+                // Project filter
+                if (project && doc.project !== project) return false;
+                
+                // Company/Contact filter
+                if (contact && doc.company !== contact) return false;
+                
+                // Content keywords filter
+                if (contentKeywords && !doc.snippet.toLowerCase().includes(contentKeywords)) return false;
+                
+                // File type filter
+                if (fileType && doc.fileType !== fileType) return false;
+                
+                return true;
+            });
+        }
+        
+        // Search button click
+        searchBtn.addEventListener('click', () => {
+            loadingEl.style.display = 'block';
+            resultsSection.style.display = 'none';
+            
+            // Update search stats
+            const searchTermDisplay = mainSearchInput.value ? `"${mainSearchInput.value}"` : "alle Dokumente";
+            document.querySelector('.stats-text').textContent = `Suche nach ${searchTermDisplay}...`;
+            
+            // Simulate loading time
+            setTimeout(() => {
+                const filteredDocuments = filterDocuments();
+                document.querySelector('.stats-text').textContent = `${filteredDocuments.length} Ergebnisse gefunden für ${searchTermDisplay}`;
+                
+                renderDocuments(filteredDocuments);
+                
+                loadingEl.style.display = 'none';
+                resultsSection.style.display = 'flex';
+            }, 800);
+        });
+        
+        // Apply filters button click
+        applyFiltersBtn.addEventListener('click', () => {
+            loadingEl.style.display = 'block';
+            resultsSection.style.display = 'none';
+            
+            // Update search stats
+            const searchTermDisplay = mainSearchInput.value ? `"${mainSearchInput.value}"` : "gefilterte Dokumente";
+            document.querySelector('.stats-text').textContent = `Suche nach ${searchTermDisplay}...`;
+            
+            // Simulate loading time
+            setTimeout(() => {
+                const filteredDocuments = filterDocuments();
+                document.querySelector('.stats-text').textContent = `${filteredDocuments.length} Ergebnisse gefunden für ${searchTermDisplay}`;
+                
+                renderDocuments(filteredDocuments);
+                
+                loadingEl.style.display = 'none';
+                resultsSection.style.display = 'flex';
+                
+                // Close filters panel
+                filtersContent.classList.remove('show');
+                const toggleIcon = filtersToggle.querySelector('svg');
+                toggleIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+            }, 800);
+        });
+        
+        // Reset filters button click
+        resetFiltersBtn.addEventListener('click', () => {
+            document.getElementById('document-type').value = '';
+            document.getElementById('date-from').value = '';
+            document.getElementById('date-to').value = '';
+            document.getElementById('project').value = '';
+            document.getElementById('contact').value = '';
+            document.getElementById('content-keywords').value = '';
+            document.getElementById('file-type').value = '';
+            document.getElementById('not-relevant').value = '';
+            document.getElementById('search-in-docs').checked = false;
+            document.getElementById('include-all-words').checked = false;
+            mainSearchInput.value = '';
+        });
+        
+        // Add event listener for Enter key in search input
+        mainSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+        
+        // Chat functionality
+        function addMessageToChat(message, isUser = false) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            // Get current time
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+            
+            // Set message content
+            if (typeof message === 'string') {
+                messageEl.innerHTML = `
+                    <p>${message}</p>
+                    <div class="message-time">${timeString}</div>
+                `;
+            } else {
+                let content = `<p>${message.text}</p>`;
+                
+                // Add attachments if any
+                if (message.attachments && message.attachments.length > 0) {
+                    message.attachments.forEach(attachment => {
+                        content += `
+                            <div class="doc-attachment">
+                                <h4>${attachment.title}</h4>
+                                <p>${attachment.description}</p>
+                            </div>
+                        `;
+                    });
+                }
+                
+                content += `<div class="message-time">${timeString}</div>`;
+                messageEl.innerHTML = content;
+            }
+            
+            chatMessages.appendChild(messageEl);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Process user chat input
+        function processChat(input) {
+            // Add user message to chat
+            addMessageToChat(input, true);
+            
+            // Simple AI responses based on input keywords (in a real app, this would call an AI service)
+            setTimeout(() => {
+                if (input.toLowerCase().includes('fundament')) {
+                    addMessageToChat({
+                        text: 'Ich habe 4 Dokumente zum Fundament gefunden:',
+                        attachments: [
+                            {
+                                title: 'Fundamentinspektion Ergebnisse - Flussufer-Turm',
+                                description: 'E-Mail vom Stadtinspektor (Michael Müller) vom 24.02.2025'
+                            },
+                            {
+                                title: 'Fundament Verstärkungsplan - Revision B',
+                                description: 'PDF von Müller Architekten vom 10.02.2025'
+                            },
+                            {
+                                title: 'Fundamentinspektions-Dienstleistungen - Vertragsänderung',
+                                description: 'Vertrag mit Schmidt Ingenieure vom 30.01.2025'
+                            },
+                            {
+                                title: 'Rechnung #J-2312 - Fundamentmaterialien',
+                                description: 'Rechnung von Weber Lieferanten AG vom 15.02.2025'
+                            }
+                        ]
+                    });
+                } else if (input.toLowerCase().includes('rechnung') || input.toLowerCase().includes('ausstehend')) {
+                    addMessageToChat({
+                        text: 'Ich habe folgende ausstehende Rechnungen gefunden:',
+                        attachments: [
+                            {
+                                title: 'Rechnung #J-2312 - Fundamentmaterialien',
+                                description: '€42.867,50 - Weber Lieferanten AG - Fällig am 17.03.2025'
+                            },
+                            {
+                                title: 'Rechnung #A-5438 - Baugeräte Miete',
+                                description: '€18.750,00 - Bauer Baumaschinen - Fällig am 22.03.2025'
+                            }
+                        ]
+                    });
+                } else if (input.toLowerCase().includes('inspektion') || input.toLowerCase().includes('nächste')) {
+                    addMessageToChat('Die nächste Inspektion für den Flussufer-Turm Komplex ist für den 15.04.2025 geplant. Der Termin wurde mit dem Stadtinspektor Michael Müller vereinbart.');
+                } else if (input.toLowerCase().includes('zusammenfass') || input.toLowerCase().includes('änderung')) {
+                    addMessageToChat({
+                        text: 'Hier sind die wichtigsten Änderungen am Flussufer-Turm Projekt in den letzten 30 Tagen:',
+                        attachments: [
+                            {
+                                title: 'Fundamentverstärkung',
+                                description: 'Zusätzliche Bewehrung und verbesserter Beton in der NW-Ecke'
+                            },
+                            {
+                                title: 'Zeitplanänderung',
+                                description: 'Fertigstellung des Fundaments um 2 Wochen nach hinten verschoben'
+                            },
+                            {
+                                title: 'Budgeterhöhung',
+                                description: '€42.867,50 zusätzlich für Fundamentmaterialien genehmigt'
+                            }
+                        ]
+                    });
+                } else {
+                    addMessageToChat('Ich verstehe Ihre Anfrage nicht ganz. Versuchen Sie, nach spezifischen Dokumenten, Projekten oder Terminen zu fragen. Oder verwenden Sie die Suchfunktion für detailliertere Ergebnisse.');
+                }
+            }, 1000);
+        }
+        
+        // Handle chat send button click
+        chatSendBtn.addEventListener('click', () => {
+            const input = chatInput.value.trim();
+            if (input) {
+                processChat(input);
+                chatInput.value = '';
+            }
+        });
+        
+        // Handle Enter key in chat input
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const input = chatInput.value.trim();
+                if (input) {
+                    processChat(input);
+                    chatInput.value = '';
+                }
+            }
+        });
+        
+        // Handle chat quick option clicks
+        chatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const optionText = option.textContent;
+                processChat(optionText);
+            });
+        });
+        
+        // Initialize application
+        function initializeApp() {
+            // Set up event listeners for tabs
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Set up filter toggle
+            filtersToggle.addEventListener('click', () => {
+                filtersContent.classList.toggle('show');
+                const toggleIcon = filtersToggle.querySelector('svg');
+                if (filtersContent.classList.contains('show')) {
+                    toggleIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
+                } else {
+                    toggleIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+                }
+            });
+            
+            // Load initial documents
+            const filteredDocuments = documentsData;
+            document.querySelector('.stats-text').textContent = `${filteredDocuments.length} Ergebnisse gefunden für "Fundament Inspektion"`;
+            
+            // Add animation class to show document cards
+            const cards = document.querySelectorAll('.document-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index);
+            });
+        }
+        
+        // Run initialization when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+        
+        // Toggle view buttons
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('view-btn') || e.target.closest('.view-btn')) {
+                const btn = e.target.classList.contains('view-btn') ? e.target : e.target.closest('.view-btn');
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+        });
+        
+        // Document action buttons functionality
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('.action-btn')) {
+                const btn = e.target.closest('.action-btn');
+                
+                // Add animation/feedback when clicked
+                btn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+                
+                // If it's the bookmark button, toggle filled/unfilled state
+                if (btn.title === 'Lesezeichen') {
+                    const svg = btn.querySelector('svg');
+                    if (svg.getAttribute('fill') === 'none') {
+                        svg.setAttribute('fill', 'currentColor');
+                        btn.style.color = '#d32f2f';
+                    } else {
+                        svg.setAttribute('fill', 'none');
+                        btn.style.color = '';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
